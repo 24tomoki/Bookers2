@@ -14,6 +14,14 @@
               <th>introduction</th>
               <th><%= current_user.introduction %></th>
             </tr>
+            <tr>
+              <th>follows</th>
+              <th><%= current_user.followings.count %></th>
+            </tr>
+            <tr>
+              <th>followers</th>
+              <th><%= current_user.reverse_of_relationships.count %></th>
+            </tr>
         </table>
           <div>
           <%= link_to '', edit_user_path(@user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
@@ -51,6 +59,27 @@
              <td>
               <%= user.name %>
              </td>
+             <td>
+               フォロー数:<%= user.followings.count %>
+             </td>
+             <td>
+               フォロワー数:<%= user.reverse_of_relationships.count %>
+             </td>
+             <td>
+             <% unless current_user == user %>
+              <% if current_user.following?(user) %>
+                <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
+                  <%= hidden_field_tag :follow_id, user.id %>
+                  <%= f.submit 'Unfollow', class: 'btn btn-danger btn-block' %>
+                <% end %>
+              <% else %>
+                <%= form_for(current_user.relationships.build) do |f| %>
+                  <%= hidden_field_tag :follow_id, user.id %>
+                  <%= f.submit 'Follow', class: 'btn btn-primary btn-block' %>
+                <% end %>
+              <% end %>
+            <% end %>
+            </td>
              <td>
               <%= link_to "Show",user_path(user) %>
              </td>

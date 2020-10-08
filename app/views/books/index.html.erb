@@ -15,6 +15,14 @@
               <th>introduction</th>
               <th><%= current_user.introduction %></th>
             </tr>
+            <tr>
+              <th>follows</th>
+              <th><%= current_user.followings.count %></th>
+            </tr>
+            <tr>
+              <th>followers</th>
+              <th><%= current_user.reverse_of_relationships.count %></th>
+            </tr>
         </table>
           <div>
           <%= link_to '', edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
